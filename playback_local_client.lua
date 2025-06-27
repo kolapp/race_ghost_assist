@@ -471,57 +471,71 @@ function drawRacingLine()
 	local start = nextNodeID
 
 	-- draw the next few nodes
-	for i = start, start+Settings["linelength"], 1 do
+	for i = start, start + Settings["linelength"], 1 do
 		node1 = recording[i]
 		-- need 2 valid nodes to make a line AND being in a vehicle to continue
 		if (node1 and vehicle) then
 
-			-- // =================[ get ghost and player speed at EVERY PIECE OF RACE LINE ] =======================//
+			----------------------------------------------------------------------------------------
+			-- Get ghost AND player speed at EVERY PIECE OF RACE LINE
+			----------------------------------------------------------------------------------------
 			ghost_speed = getDistanceBetweenPoints3D(0, 0, 0, node1.vX, node1.vY, node1.vZ)
 			my_speed = getDistanceBetweenPoints3D(0, 0, 0, getElementVelocity(vehicle))
 			my_dst = getDistanceBetweenPoints3D(node1.x, node1.y, node1.z, getElementPosition(vehicle))
 
-			-- !!!
-			-- TODO: need a sensitivity setting here, somewhere. careful with saturation
-			speed_err = Settings["sensitivity"] * ((my_speed - ghost_speed)/ghost_speed)  -- relative speed error
-			-- speed_err = (ghost_speed - my_speed) * 160 -- old: speed difference roughly in kmh
+			-- relative speed error
+			speed_err = Settings["sensitivity"] * ((my_speed - ghost_speed) / ghost_speed)
+			-- old: speed difference roughly in kmh
+			-- speed_err = (ghost_speed - my_speed) * 160
 
 			-- DEBUG
-			-- if i == start then dxDrawText ("speed error: "..math.floor(speed_err*100).. " %", 800, 440, 1920, 1080, tocolor(255, 128, 0, 255), 1, "pricedown") end
-			-- if i == start then dxDrawText ("my speed: ".. math.floor(my_speed*160), 800, 480, 1920, 1080, tocolor(255, 128, 0, 255), 1, "pricedown") end
-			-- if i == start then dxDrawText ("ghost speed: ".. math.floor(ghost_speed*160), 800, 520, 1920, 1080, tocolor(255, 128, 0, 255), 1, "pricedown") end
+			-- if i == start then
+			-- 	dxDrawText("speed error: "..math.floor(speed_err*100).. " %", 800, 440, 1920, 1080, tocolor(255, 128, 0, 255), 1, "pricedown")
+			-- end
+			-- if i == start then
+			-- 	dxDrawText("my speed: ".. math.floor(my_speed*160), 800, 480, 1920, 1080, tocolor(255, 128, 0, 255), 1, "pricedown")
+			-- end
+			-- if i == start then
+			-- 	dxDrawText("ghost speed: ".. math.floor(ghost_speed*160), 800, 520, 1920, 1080, tocolor(255, 128, 0, 255), 1, "pricedown")
+			-- end
 
-			-- // =========================[ Speed color coding ] ==============================//
-			-- speed color coding FOR RELATIVE SPEED ERROR, red=too fast, green=okay, white=too slow
+			----------------------------------------------------------------------------------------
+			-- Speed color coding FOR RELATIVE SPEED ERROR
+			-- red=too fast, green=okay, white=too slow
 			-- scaled to [-50%, 50%] relative speed error interval
 			-- speed_err = 0.5 means u go 50% faster than the ghost
-			color_r = math.clamp(0, 510*math.abs(speed_err), 255)
-			color_g = math.clamp(0, -510*speed_err + 255, 255)
-			color_b = math.clamp(0, -510*speed_err, 255)
-			color_a = math.clamp(0, 0.5*my_dst^2, 175) -- sharp fade
+			----------------------------------------------------------------------------------------
+			color_r = math.clamp(0, 510 * math.abs(speed_err), 255)
+			color_g = math.clamp(0, -510 * speed_err + 255, 255)
+			color_b = math.clamp(0, -510 * speed_err, 255)
+			color_a = math.clamp(0, 0.5 * my_dst ^ 2, 175) -- sharp fade
 
-			-- -- speed color coding, red=too fast, green=normal, white=too slow
-			-- -- scaled to [-25, 25] kmh speed diff interval
+			-- speed color coding, red=too fast, green=normal, white=too slow
+			-- scaled to [-25, 25] kmh speed diff interval
 			-- color_r = math.clamp(0, math.abs(-10*speed_err), 255)
 			-- color_g = math.clamp(0, 10*speed_err + 255, 255)
 			-- color_b = math.clamp(0, 10*speed_err, 255)
 			-- color_a = math.clamp(0, 0.5*my_dst^2, 175) -- sharper fade
 
 
-			-- // =================================================[ Draw one line piece ]=================================================//
-			-- looks better
+			----------------------------------------------------------------------------------------
+			-- Draw one line piece
+			----------------------------------------------------------------------------------------
 			rx, ry, rz = node1.rX, node1.rY, node1.rZ
 			if (rx > 180) then rx = rx - 360 end
 			if (ry > 180) then ry = ry - 360 end
 
-
-			-- (xx, yy, zz) <--> (node1.x, node1.y, node1.z) is perpendicular line under the car, used for facing arrows and collision check
+			-- (xx, yy, zz) <--> (node1.x, node1.y, node1.z) is perpendicular line under the car,
+			-- used for facing arrows and collision check
 			xx, yy, zz = getPositionFromElementOffset(node1.x, node1.y, node1.z, rx, ry, rz, -4)
 			-- check hitpoints on the road
-			_, gx, gy, gz, _ = processLineOfSight(node1.x, node1.y, node1.z, xx, yy, zz, true, false, false, true)
+			_, gx, gy, gz, _ = processLineOfSight(
+				node1.x, node1.y, node1.z,
+				xx, yy, zz,
+				true, false, false, true
+			)
 
-
-			-- plan b if there was no collision
+			-- plan B, if there was no collision
 			-- rx > 80: going straight up or upside down
 			-- ry > 70 going sideways on a wall
 			if not gx and abs(rx) < 80 and abs(ry) < 70 then
@@ -532,18 +546,15 @@ function drawRacingLine()
 				end
 			end
 
-			-- there was collision under the car or node was simply snapped to ground
+			-- there was collision under the car OR node was simply snapped to ground
 			if gx then
-				-- push it above the road a little, works upside down too
+				-- push it above the road a little (works upside down too)
 				gx, gy, gz = getPositionFromElementOffset(gx, gy, gz, rx, ry, rz, 0.2)
 
 				-- DEBUG: keep this
 				-- one node and scanline
-				dxDrawLine3D(gx, gy, gz-0.1, gx, gy, gz+0.1, tocolor(0,255,0, 255), 15)
-				dxDrawLine3D(xx, yy, zz, node1.x, node1.y, node1.z)
-
-				-- fak
-				-- if i == start then dxDrawText (node1.z-gz, 800, 440, 1920, 1080, tocolor(255, 128, 0, 255), 1, "pricedown") end
+				-- dxDrawLine3D(gx, gy, gz-0.1, gx, gy, gz+0.1, tocolor(0,255,0, 255), 15)
+				-- dxDrawLine3D(xx, yy, zz, node1.x, node1.y, node1.z)
 
 				-- !!!
 				if gx and xx2 and i ~= start then
@@ -557,18 +568,16 @@ function drawRacingLine()
 				-- !!!
 				-- node1 and node1 from previous iteration are connected into a line
 				xx2, yy2, zz2 = gx, gy, gz
+
 			-- there was no collision
 			else
 				xx2, yy2, zz2 = nil, nil, nil
 
 				-- DEBUG: keep this
 				-- one node and scanline
-				dxDrawLine3D(xx, yy, zz-0.1, xx, yy, zz+0.1, tocolor(255,0,0, 255), 15)
-				dxDrawLine3D(xx, yy, zz, node1.x, node1.y, node1.z, tocolor(255,0,0, 255))
-
+				-- dxDrawLine3D(xx, yy, zz-0.1, xx, yy, zz+0.1, tocolor(255,0,0, 255), 15)
+				-- dxDrawLine3D(xx, yy, zz, node1.x, node1.y, node1.z, tocolor(255,0,0, 255))
 			end -- gx
 		end	-- node check
-
 	end	-- for
-
 end
