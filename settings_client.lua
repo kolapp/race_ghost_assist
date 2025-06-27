@@ -4,10 +4,10 @@ local child
 -- !!!
 -- default settings
 Settings = {
-	["enable"] = "on",
-	["mode"] = "local", -- [top | local] - which ghost to use
-	["sensitivity"] = 1, -- defines when the line turns green/red
-	["linelength"] = 12 -- length of the racing line
+	["enable"] = "off",
+	["mode"] = "local", -- top/local
+	["sensitivity"] = 1,
+	["linelength"] = 12
 }
 -- !!!
 
@@ -72,7 +72,7 @@ function loadSettings()
 	xmlUnloadFile(file)
 
 	-- debug
-    -- outputDebug("Settings loaded!")
+    outputDebug("Settings loaded!")
 	-- outputChatBox("loadSettings: \n"..inspect(cfg))
 	
 end -- loadSettings

@@ -1,4 +1,4 @@
-_DEBUG = false
+_DEBUG = true
 
 
 function outputDebug( ... )
@@ -28,7 +28,6 @@ function RemoveHEXColorCode(s)
     return s:gsub('#%x%x%x%x%x%x', '') or s 
 end
 
-
 function msToTimeStr(ms)
 	if not ms then
 		return ''
@@ -46,11 +45,14 @@ function msToTimeStr(ms)
 	return minutes .. ':' .. seconds .. ':' .. centiseconds
 end
 
-function removeColorCoding(name)
-	return type(name)=='string' and string.gsub(name, '#%x%x%x%x%x%x', '') or name
+function removeColorCoding ( name )
+	return type(name)=='string' and string.gsub ( name, '#%x%x%x%x%x%x', '' ) or name
 end
 
 
+---------------------------------------------------------------------------
+-- Math extentions
+---------------------------------------------------------------------------
 function math.clamp(low, value, high)
 	return math.max(low, math.min(value, high))
 end
