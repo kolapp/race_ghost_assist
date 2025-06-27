@@ -1,0 +1,35 @@
+you need to know 
+	where your player's car is in the race (cp progrses)
+	where your ghost's car is in the race (harder ghost car harder, it doesn't collect cps)
+
+
+retrieve all the x,y,z's of the cps
+
+search for the first node within distance of collecting cp1
+
+if so then everything up until that node is part 1
+then run through your node list and search for the first node that is within distance of collecting cp2
+if so then everything up until that node is part 2
+etc
+during the race check at which cp your player's car is and retrieve all nodes from that part
+then get the node that is nearest to the player
+that way you have the right node heading for the right cp that is closest to your player
+after that you can draw as many nodes ahead as you want
+
+
+the hard part will be dividing the nodes in parts as different types of checkpoints have different types of ways of collecting them
+a normal checkpoint collects if you are at the right x and y, a corona or cylinder collects if you are at the right x y and z
+although some nodes might even overlap while being in the same part, heading for the same cp
+imagine a race where you start at the bottom floor, drive 100km ahead and have to turn around, go up a ramp and drive 100km back to finish just above the start(edited)
+that way the script will always pick the wrong node at some point, there is no way in making it good
+
+
+
+-------- vagy -----------
+- fenn lehet egy monotonit�st tartani
+	- a nearby node-ok k�z�l a node_id v�ltoz�s pozit�v �s minim�lis legyen az el�z�h�z k�pest --> tal�n nem t�r �t m�sik �tvonalra
+	- last_node -1-r�l indul --> �gy nem lehet f�lremenni a verseny elej�n
+	- next_node id az el�z�n�l csak nagyobb lehet
+
+- mi van ha megd�glik? 
+- 1 kanyarhoz csak 1x l�tod az �vet
