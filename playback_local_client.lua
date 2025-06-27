@@ -340,21 +340,19 @@ function updateRacingLine()
 	-- Looking for the next valid ghostpoint, the first unvisited node that is within range.
 	-- Search starts from the last visited node. Only looking forward from there!
 	------------------------------------------------------------------------------------------------
-	dst = 0
+	-- TODO: this is a mess
+	-- save the last, before looking for a new one
+	lastNodeID = nextNodeID -- remove this to see already visited routes
 	nextNode = nil
-
-	-- !!! save the last, before looking for a new one
-	-- remove this to see visited routes
-	lastNodeID = nextNodeID
-
 	id = lastNodeID
+	
 	while(recording[id]) do
 		dst = getDistanceBetweenPoints3D(
 			recording[id].x, recording[id].y, recording[id].z,
 			getElementPosition(getLocalPlayer())
 		)
 
-		-- nearby and unvisited points
+		-- found it, a nearby and unvisited point
 		if (dst < 50 and id >= lastNodeID) then
 			nextNode = id
 			break
@@ -365,8 +363,9 @@ function updateRacingLine()
 
 
 	------------------------------------------------------------------------------------------------
-	-- Find the nearest valid ghostpoint.
-	-- If a valid next node was found, scroll trough a few nodes and find one closest to player.
+	-- At this point, the racing line is too far behind the player. It is valid, but looks stupid.
+	-- I want the racing line to start from the vehicle.
+	-- For that, I scroll through a few nodes to find one close to the player.
 	------------------------------------------------------------------------------------------------
 	if (nextNode ~= nil) then
 		prev_dst = math.huge
@@ -400,7 +399,6 @@ function updateRacingLine()
 
 		-- old solution: not the nearest node, but grips nicely to the car
 		-- nextNodeID = nextNode
-
 	end -- nil
 
 
