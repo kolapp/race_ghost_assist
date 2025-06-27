@@ -409,14 +409,12 @@ function updateRacingLine()
 	my_weight = 1500
 	arrowSize = 2
 	if (vehicle) then
-		my_weight = (getVehicleHandling(vehicle).mass)
+		my_weight = getVehicleHandling(vehicle).mass
 
-		-- dirt 3 style arrow size
-		arrowSize = math.clamp(1, (0.04*my_weight+180)/200, 3)
-
-		-- forza style arrow size
-		-- arrowSize = math.clamp(1.5, (0.04*my_weight+180)/150, 5)
+		-- dirt 3 style arrow
+		arrowSize = math.clamp(1, (0.04 * my_weight + 180) / 200, 3)
 	end
+	
 end
 
 
