@@ -419,43 +419,55 @@ function drawRacingLine()
 	-- http://mathworld.wolfram.com/RelativeError.html
 	-- https://www.lua.org/gems/sample.pdf
 
-	-- // ==================[ DEBUG: Show the full racing line, highlight nearby and next nodes ] =====================//
-	-- local nearbyNodes = {}
+
+	------------------------------------------------------------------------------------------------
+	-- // ==============[ DEBUG: Show the full racing line, highlight nearby and next node ] =====//
 	local i = 1
 	node1 = recording[i]
 	node2 = recording[i+1]
 	while(node1 and node2) do
-		-- one piece of race line
-		dxDrawLine3D (node1.x, node1.y, node1.z-0.4, node2.x, node2.y, node2.z-0.4, tocolor(255,255,255, 128), 8)
+		-- one line-piece of whole racing line
+		dxDrawLine3D(
+			node1.x, node1.y, node1.z-0.4,
+			node2.x, node2.y, node2.z-0.4,
+			tocolor(255,255,255, 128),
+			8
+		)
 
-		dst = getDistanceBetweenPoints3D(node1.x, node1.y, node1.z, getElementPosition(getLocalPlayer()))
+		-- nodes that are nearby the player
+		dst = getDistanceBetweenPoints3D(
+			node1.x, node1.y, node1.z,
+			getElementPosition(getLocalPlayer())
+		)
 		if (dst < 50) then
 			-- one nearby node
-			dxDrawLine3D (node1.x, node1.y, node1.z-0.6, node1.x, node1.y, node1.z-0.4, tocolor (255,0,0, 255), 25)
-			-- store nearby points
-			-- table.insert(nearbyNodes, i, dst)
+			dxDrawLine3D(
+				node1.x, node1.y, node1.z-0.6,
+				node1.x, node1.y, node1.z-0.4,
+				tocolor(255, 0, 0, 255),
+				25
+			)
 		end
+
 		i = i + 1
 		node1 = recording[i]
 		node2 = recording[i+1]
 	end
 
-	-- show the table of nearby nodes
-	if (nearbyNodes) then
-		dxDrawText(inspect(nearbyNodes), 200, 500, 250)
-	end
-
 	-- draw the next node
 	node1 = recording[nextNodeID]
 	if (node1) then
-		dxDrawLine3D (node1.x, node1.y, node1.z-0.6, node1.x, node1.y, node1.z-0.4, tocolor(0,255,0, 255), 40)
+		dxDrawLine3D(
+			node1.x, node1.y, node1.z-0.6,
+			node1.x, node1.y, node1.z-0.4,
+			tocolor(0, 255, 0, 255),
+			40
+		)
 	end
 
-	-- DEBUG
-	-- dxDrawText(getVehicleType(vehicle), 800, 440, 1920, 1080, tocolor(255, 128, 0, 255), 1, "pricedown")
 
-
-	-- // =================================[ Draw racing line section near player ] =====================================//
+	------------------------------------------------------------------------------------------------
+	-- // ===================[ Draw racing line section near player ] ============================//
 	-- vehicle = getPedOccupiedVehicle(getLocalPlayer()) -- keep this
 	-- local start = nextNodeID
 
