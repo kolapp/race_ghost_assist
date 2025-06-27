@@ -441,13 +441,12 @@ function drawRacingLine()
 			8
 		)
 
-		-- nodes that are nearby the player
+		-- a few nodes near the player
 		dst = getDistanceBetweenPoints3D(
 			node1.x, node1.y, node1.z,
 			getElementPosition(getLocalPlayer())
 		)
 		if (dst < 50) then
-			-- one nearby node
 			dxDrawLine3D(
 				node1.x, node1.y, node1.z-0.6,
 				node1.x, node1.y, node1.z-0.4,
