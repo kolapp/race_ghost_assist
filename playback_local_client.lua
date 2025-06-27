@@ -336,31 +336,37 @@ function updateRacingLine()
 		end
 	end
 
-
-	-- // ====================[ Find the next valid ghostpoint ] ==========================//
-	prev_dst = math.huge
+	------------------------------------------------------------------------------------------------
+	-- Looking for the next valid ghostpoint, the first unvisited node that is within range.
+	-- Search starts from the last visited node. Only looking forward from there!
+	------------------------------------------------------------------------------------------------
 	dst = 0
 	nextNode = nil
-	-- looking for the first unvisited node within range
-	-- search starts from the last visited node and then only looking forward!
 	-- !!!
 	-- save the last, before looking for a new one
 	lastNodeID = nextNodeID -- remove this to see visited routes
-	-- !!!
+	
 	id = lastNodeID
 	while(recording[id]) do
-			x, y, z = recording[id].x, recording[id].y, recording[id].z
-			dst = getDistanceBetweenPoints3D(x, y, z, getElementPosition(getLocalPlayer()))
-			-- get nearby unvisited points
-			if (dst < 50 and id >= lastNodeID) then -- ugly constant here
-				nextNode = id
-				break
-			end
-		id = id + 1
-	end -- while
+		dst = getDistanceBetweenPoints3D(
+			recording[id].x, recording[id].y, recording[id].z
+			getElementPosition(getLocalPlayer())
+		)
 
-	-- // ====================[ Find the nearest valid ghostpoint ] ==========================//
-	-- if a valid next node was found, scroll trough a few nodes and find one closest to player
+		-- get nearby unvisited points
+		if (dst < 50 and id >= lastNodeID) then
+			nextNode = id
+			break
+		end
+
+		id = id + 1
+	end
+
+
+	------------------------------------------------------------------------------------------------
+	-- Find the nearest valid ghostpoint.
+	-- If a valid next node was found, scroll trough a few nodes and find one closest to player.
+	------------------------------------------------------------------------------------------------
 	if (nextNode ~= nil) then
 		prev_dst = math.huge
 		dst = 0
@@ -397,6 +403,7 @@ function updateRacingLine()
 	end -- nil
 
 
+	------------------------------------------------------------------------------------------------
 	-- resize arrow based on vehicle size
 	my_weight = 1500
 	arrowSize = 2
@@ -409,7 +416,6 @@ function updateRacingLine()
 		-- forza style arrow size
 		-- arrowSize = math.clamp(1.5, (0.04*my_weight+180)/150, 5)
 	end
-
 end
 
 
