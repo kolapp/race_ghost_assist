@@ -342,18 +342,19 @@ function updateRacingLine()
 	------------------------------------------------------------------------------------------------
 	dst = 0
 	nextNode = nil
-	-- !!!
-	-- save the last, before looking for a new one
-	lastNodeID = nextNodeID -- remove this to see visited routes
-	
+
+	-- !!! save the last, before looking for a new one
+	-- remove this to see visited routes
+	lastNodeID = nextNodeID
+
 	id = lastNodeID
 	while(recording[id]) do
 		dst = getDistanceBetweenPoints3D(
-			recording[id].x, recording[id].y, recording[id].z
+			recording[id].x, recording[id].y, recording[id].z,
 			getElementPosition(getLocalPlayer())
 		)
 
-		-- get nearby unvisited points
+		-- nearby and unvisited points
 		if (dst < 50 and id >= lastNodeID) then
 			nextNode = id
 			break
