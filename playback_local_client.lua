@@ -325,8 +325,9 @@ end
 --------------------------------------------------------------------------------------------------
 function updateRacingLine()
 
-	-- hide racing line for air vehicles
 	vehicle = getPedOccupiedVehicle(getLocalPlayer()) -- keep this
+
+	-- hide racing line for air vehicles
 	if Settings["enable"] == "on" and vehicle then
 		vType = getVehicleType(vehicle)
 		if (vType == "Plane" or vType == "Helicopter" or vType == "Boat") then
@@ -345,7 +346,7 @@ function updateRacingLine()
 	lastNodeID = nextNodeID -- remove this to see already visited routes
 	nextNode = nil
 	id = lastNodeID
-	
+
 	while(recording[id]) do
 		dst = getDistanceBetweenPoints3D(
 			recording[id].x, recording[id].y, recording[id].z,
@@ -366,6 +367,7 @@ function updateRacingLine()
 	-- At this point, the racing line is too far behind the player. It is valid, but looks stupid.
 	-- I want the racing line to start from the vehicle.
 	-- For that, I scroll through a few nodes to find one close to the player.
+	-- TODO: somewhat hard to understand the concept from code
 	------------------------------------------------------------------------------------------------
 	if (nextNode ~= nil) then
 		prev_dst = math.huge
@@ -389,16 +391,8 @@ function updateRacingLine()
 					nextNodeID = idx
 					-- !!!
 				end
-				-- DEBUG
-				-- dxDrawText( inspect(prev), 200, 440, 250)
-				-- dxDrawText( inspect("prev id: "..nextNode .." ".. prev_dst), 200, 420, 250)
-				-- dxDrawText( inspect(curr), 400, 440, 250)
-				-- dxDrawText( inspect("next id: "..idx .." ".. dst), 400, 420, 250)
-			end -- if
+			end
 		end -- vehicle
-
-		-- old solution: not the nearest node, but grips nicely to the car
-		-- nextNodeID = nextNode
 	end -- nil
 
 
@@ -412,7 +406,7 @@ function updateRacingLine()
 		-- dirt 3 style arrow
 		arrowSize = math.clamp(1, (0.04 * my_weight + 180) / 200, 3)
 	end
-	
+
 end
 
 
