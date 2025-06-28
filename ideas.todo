@@ -1,8 +1,8 @@
 @pin
-	☐ file and function names are terrible
 	☐ functions are too long spaghetti code
-	☐ racing line lags behind when im much faster than the ghost
-	☐ dont draw racing lines below the vehicle when its flying over a jump
+	✔ file and function names are terrible @done(25-06-28 15:51)
+	✘ racing line lags behind when im much faster than the ghost @cancelled(25-06-28 15:51)
+	✔ dont draw racing lines below the vehicle when its flying over a jump @done(25-06-28 15:51)
 
 you need to know
 	where your player's car is in the race (cp progrses)
