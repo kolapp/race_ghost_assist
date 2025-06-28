@@ -2,14 +2,9 @@
 	<info type="script" name="Dynamic racing lines" description="" addon="race" author="Awwu, fak"
 		version="1.0" />
 
-	<script src="global_client.lua" type="client" />
-	<script src="settings_client.lua" type="client" />
-	<script src="playback_local_client.lua" type="client" />
-
-	<!--
-	<script src="playback_global_server.lua" type="server" />
-	<script src="util_server.lua" type="server" />
-	-->
+	<script src="client_playback.lua" type="client" />
+	<script src="client_settings.lua" type="client" />
+	<script src="client_util.lua" type="client" />
 
 	<file src="img/arrow.png" />
 

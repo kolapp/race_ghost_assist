@@ -2,6 +2,7 @@
 	☐ file and function names are terrible
 	☐ functions are too long spaghetti code
 	☐ racing line lags behind when im much faster than the ghost
+	☐ dont draw racing lines below the vehicle when its flying over a jump
 
 you need to know
 	where your player's car is in the race (cp progrses)
