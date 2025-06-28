@@ -1,4 +1,9 @@
-you need to know 
+@pin
+	☐ file and function names are terrible
+	☐ functions are too long spaghetti code
+	☐ racing line lags behind when im much faster than the ghost
+
+you need to know
 	where your player's car is in the race (cp progrses)
 	where your ghost's car is in the race (harder ghost car harder, it doesn't collect cps)
 
