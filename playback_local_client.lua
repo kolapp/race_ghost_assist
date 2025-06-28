@@ -31,7 +31,7 @@ local arrowSize = 2
 local drawRacingLine_HANDLER = nil
 local assistTimer = nil
 local recording = nil
-local img = dxCreateTexture("arrow.png")
+local img = dxCreateTexture("img/arrow.png")
 
 -- trying to buy some time
 local sin = math.sin
