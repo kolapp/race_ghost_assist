@@ -12,43 +12,42 @@ Settings = {
 -- !!!
 
 
-
--- // ======================[ saveSettings ] =============================//
+----------------------------------------------------------------------------------------------------
 function saveSettings()
     outputDebug("@saveSettings")
-	
+
     local file = xmlLoadFile( "/settings/assist_settings.xml")
 	if not file then
 		file = xmlCreateFile("/settings/assist_settings.xml", "settings")
-	end	
-	
+	end
+
 	-- save the values
     for key, val in pairs(Settings) do
         child = xmlFindChild(file, key, 0)
         if child then
             xmlNodeSetValue(child, val)
 		-- key wasnt found
-        else 
+        else
             child = xmlCreateChild(file, key)
             xmlNodeSetValue(child, val)
         end
     end
-	
+
     if xmlSaveFile(file) then
 		-- debug
 		outputDebug("Settings saved!")
 	end
-    xmlUnloadFile(file)	
-	
+    xmlUnloadFile(file)
+
 end
 
 
--- // ======================[ loadSettings ] =============================//
+----------------------------------------------------------------------------------------------------
 function loadSettings()
     outputDebug("@loadSettings")
-	
+
 	file = xmlLoadFile("/settings/assist_settings.xml")
-	
+
 	-- create a default settings xml
 	if not file then
 		file = xmlCreateFile("/settings/assist_settings.xml", "settings")
@@ -67,12 +66,12 @@ function loadSettings()
 		["sensitivity"] = xmlNodeGetValue(xmlFindChild(file, "sensitivity", 0)),
 		["linelength"] = xmlNodeGetValue(xmlFindChild(file, "linelength", 0))
 	}
-	
+
 	Settings = cfg
 	xmlUnloadFile(file)
 
 	-- debug
     outputDebug("Settings loaded!")
 	-- outputChatBox("loadSettings: \n"..inspect(cfg))
-	
+
 end -- loadSettings
