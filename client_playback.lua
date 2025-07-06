@@ -246,48 +246,49 @@ addEventHandler(
 
 
 ----------------------------------------------------------------------------------------------------
+-- NOTE: no need, using only local ghost files
 -- setup ghost received from SERVER
-addEventHandler(
-	"onClientGhostDataReceive",
-	g_Root,
-	function(rec, bestTime, racer, _, _)
-		outputDebug("onClientGhostDataReceive") -- DEBUG
+-- addEventHandler(
+-- 	"onClientGhostDataReceive",
+-- 	g_Root,
+-- 	function(rec, bestTime, racer, _, _)
+-- 		outputDebug("onClientGhostDataReceive") -- DEBUG
 
-		-- !!!
-		if Settings["enable"] == "on" and Settings["mode"] == "top" then
-			-- destroy any leftover stuff
-			if recording then
-				destroy()
-			end
+-- 		-- !!!
+-- 		if Settings["enable"] == "on" and Settings["mode"] == "top" then
+-- 			-- destroy any leftover stuff
+-- 			if recording then
+-- 				destroy()
+-- 			end
 
-			-- ghost data from "race_ghost" folder must be converted
-			recording = {}
+-- 			-- ghost data from "race_ghost" folder must be converted
+-- 			recording = {}
 
-			-- "While a table with three elements needs three rehashings, a table with one
-			-- million elements needs only twenty"
-			-- copy and filter things
-			local i = 1
-			while(rec[i]) do
-				-- only need po type
-				if (rec[i].ty == "po") then
-					table.insert(recording, rec[i])
-				end
-				i = i + 1
-			end -- while
+-- 			-- "While a table with three elements needs three rehashings, a table with one
+-- 			-- million elements needs only twenty"
+-- 			-- copy and filter things
+-- 			local i = 1
+-- 			while(rec[i]) do
+-- 				-- only need po type
+-- 				if (rec[i].ty == "po") then
+-- 					table.insert(recording, rec[i])
+-- 				end
+-- 				i = i + 1
+-- 			end -- while
 
-			lastNodeID = 1
-			nextNodeID = 1
-			-- !!!
-			-- start a timer that updates raceline parameters
-			assistTimer = setTimer(updateRacingLine, 150, 0)
-			-- start drawing the racing line
-			show()
+-- 			lastNodeID = 1
+-- 			nextNodeID = 1
+-- 			-- !!!
+-- 			-- start a timer that updates raceline parameters
+-- 			assistTimer = setTimer(updateRacingLine, 150, 0)
+-- 			-- start drawing the racing line
+-- 			show()
 
-			outputDebug("ghost loaded, starting assist") -- DEBUG
-			outputChatBox("[Racing Assist] #ffffffGhost by " .. RemoveHEXColorCode(racer) .. " @".. msToTimeStr(bestTime).. " loaded.", 255, 170, 64, true)
-		end -- if
-	end -- func
-)
+-- 			outputDebug("ghost loaded, starting assist") -- DEBUG
+-- 			outputChatBox("[Racing Assist] #ffffffGhost by " .. RemoveHEXColorCode(racer) .. " @".. msToTimeStr(bestTime).. " loaded.", 255, 170, 64, true)
+-- 		end -- if
+-- 	end -- func
+-- )
 
 
 ----------------------------------------------------------------------------------------------------
