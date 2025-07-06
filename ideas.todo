@@ -1,8 +1,29 @@
 @pin
+	☐ stick to using only local ghost files
 	☐ functions are too long spaghetti code
 	✔ file and function names are terrible @done(25-06-28 15:51)
 	✘ racing line lags behind when im much faster than the ghost @cancelled(25-06-28 15:51)
 	✔ dont draw racing lines below the vehicle when its flying over a jump @done(25-06-28 15:51)
+
+	☐ ghost fix for mr green
+		[Dev] VulpyWags: The way ghosts are saved is also differnetly, so issue 1 wont' fix it
+		[Dev] VulpyWags: See https://github.com/MrGreenGaming/MTA-Resources/blob/78b71e16117c49dfa83e235ad40bc2d6f84c8f47/resources/%5Brace%5D/race_ghost/playback_client.lua#L333
+		[Dev] VulpyWags: That's your local Personal Best
+		[Dev] VulpyWags: That ghost data should be send to  your resource
+		[Dev] VulpyWags: you can use that to draw the line
+
+		[Dev] VulpyWags: There's two methods I think can work
+		[Dev] VulpyWags: Trigger an event in the PB if statement I mentioned
+		[Dev] VulpyWags: Or change the way how you load the ghost file and parse the ghost file
+		[Dev] VulpyWags: MTA San Andreas\mods\deathmatch\priv\E5E7F2\race_ghost\ghosts\race-racingsantos_VulpyWags_PB.ghost
+		[Dev] VulpyWags: Is my local best ghost file
+		[Dev] VulpyWags: Note that it's in the private folder, so each server it's different
+
+		[Dev] VulpyWags: I think the 2nd method is more clean
+		[Dev] VulpyWags: So you're not depended on the ghost resource
+
+	☐ mta somehow reads .ghost files from a different mta install location
+---
 
 you need to know
 	where your player's car is in the race (cp progrses)
@@ -37,5 +58,5 @@ that way the script will always pick the wrong node at some point, there is no w
 	- last_node -1-r�l indul --> �gy nem lehet f�lremenni a verseny elej�n
 	- next_node id az el�z�n�l csak nagyobb lehet
 
-- mi van ha megd�glik? 
+- mi van ha megd�glik?
 - 1 kanyarhoz csak 1x l�tod az �vet
