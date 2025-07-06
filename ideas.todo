@@ -1,11 +1,15 @@
 @pin
-	☐ stick to using only local ghost files
 	☐ functions are too long spaghetti code
 	✔ file and function names are terrible @done(25-06-28 15:51)
 	✘ racing line lags behind when im much faster than the ghost @cancelled(25-06-28 15:51)
 	✔ dont draw racing lines below the vehicle when its flying over a jump @done(25-06-28 15:51)
 
 	☐ ghost fix for mr green
+		☐ convert ghost to json
+		☐ ghost names probably changed
+		☐ stick to using only local ghost files
+			☐ mta somehow reads .ghost files from a different mta install location
+
 		[Dev] VulpyWags: The way ghosts are saved is also differnetly, so issue 1 wont' fix it
 		[Dev] VulpyWags: See https://github.com/MrGreenGaming/MTA-Resources/blob/78b71e16117c49dfa83e235ad40bc2d6f84c8f47/resources/%5Brace%5D/race_ghost/playback_client.lua#L333
 		[Dev] VulpyWags: That's your local Personal Best
@@ -21,8 +25,6 @@
 
 		[Dev] VulpyWags: I think the 2nd method is more clean
 		[Dev] VulpyWags: So you're not depended on the ghost resource
-
-	☐ mta somehow reads .ghost files from a different mta install location
 ---
 
 you need to know
