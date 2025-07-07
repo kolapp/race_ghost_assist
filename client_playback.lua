@@ -549,14 +549,6 @@ function drawRacingLine()
 			-- ry > 70 going sideways on a wall
 			if not gx and abs(rx) < 80 and abs(ry) < 70 then
 				gx, gy, gz = node1.x, node1.y, getGroundPosition(node1.x, node1.y, node1.z)
-
-				-- DEBUG, see ground coordinates
-				-- dxDrawLine3D(
-				-- 	gx, gy, gz,
-				-- 	gx, gy, gz+0.2,
-				-- 	tocolor(255, 0, 0, 255), 25
-				-- )
-
 				-- dont snap if ground is too far
 				if abs(gz - node1.z) > 15 then
 					gx, gy, gz = nil
@@ -564,17 +556,15 @@ function drawRacingLine()
 			end
 
 
-			-- there was collision under the car OR node was simply snapped to ground
+			-- Some ground coordinates were found.
 			if gx then
-				-- push it above the road a little (works upside down too)
+				-- nudge it above the road a little (works upside down too)
 				gx, gy, gz = getPositionFromElementOffset(gx, gy, gz, rx, ry, rz, 0.2)
 
 				-- DEBUG: keep this
-				-- one node and scanline
-				-- dxDrawLine3D(gx, gy, gz-0.1, gx, gy, gz+0.1, tocolor(0,255,0, 255), 15)
-				-- dxDrawLine3D(xx, yy, zz, node1.x, node1.y, node1.z)
+				-- see ground coordinates
+				-- dxDrawLine3D(gx, gy, gz-0.1, gx, gy, gz+0.1, tocolor(255, 0, 0, 255), 15)
 
-				-- TODO: what?
 				-- !!!
 				if gx and xx2 and i ~= start then
 					dxDrawMaterialLine3D(
@@ -583,9 +573,9 @@ function drawRacingLine()
 						img, arrowSize, tocolor(color_r, color_g, color_b, color_a),
 						xx, yy, zz
 					)
-				end -- xx2
+				end
 				-- !!!
-				-- node1 and node1 from previous iteration are connected into a line
+				-- Current node and node from previous iteration are connected into a line!
 				xx2, yy2, zz2 = gx, gy, gz
 
 			-- there was no collision
