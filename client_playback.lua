@@ -523,35 +523,46 @@ function drawRacingLine()
 
 			----------------------------------------------------------------------------------------
 			-- Draw one line piece
-			-- Attempt to snap the racing line to the road
+			-- Snap the racing line to the surface
 			----------------------------------------------------------------------------------------
 			rx, ry, rz = node1.rX, node1.rY, node1.rZ
 			if (rx > 180) then rx = rx - 360 end
 			if (ry > 180) then ry = ry - 360 end
 
-			-- An arbitrary point always under the car. Used for facing arrows and collision check
+			-- PLAN A) Look for hitpoints directly under the ghost car.
+			-- Should work even if the car is upside down!
 			xx, yy, zz = getPositionFromElementOffset(node1.x, node1.y, node1.z, rx, ry, rz, -4)
-
-			-- Check hitpoints on the road.
-			-- The line (xx, yy, zz) <--> (node1.x, node1.y, node1.z) is perpendicular to the car
-			-- and points down relative to the car.
-			-- gx, gy, gy is supposed to be a position on the road.
+			-- The line (xx, yy, zz) <--> (node1.x, node1.y, node1.z) is perpendicular
+			-- to the plane of the car and points down.
+			-- Letter "g" stands for "ground".
 			_, gx, gy, gz, _ = processLineOfSight(
 				node1.x, node1.y, node1.z,
 				xx, yy, zz,
 				true, false, false, true
 			)
+			-- DEBUG, see hitpoint ray
+			-- dxDrawLine3D(node1.x, node1.y, node1.z, xx, yy, zz, tocolor(255, 255, 255, 255), 8)
 
-			-- plan B, if there was no collision
+
+			-- PLAN B) Simply snap to the ground, because there was no collision.
 			-- rx > 80: going straight up or upside down
 			-- ry > 70 going sideways on a wall
 			if not gx and abs(rx) < 80 and abs(ry) < 70 then
 				gx, gy, gz = node1.x, node1.y, getGroundPosition(node1.x, node1.y, node1.z)
-				-- dont snap to the road if too far
+
+				-- DEBUG, see ground coordinates
+				-- dxDrawLine3D(
+				-- 	gx, gy, gz,
+				-- 	gx, gy, gz+0.2,
+				-- 	tocolor(255, 0, 0, 255), 25
+				-- )
+
+				-- dont snap if ground is too far
 				if abs(gz - node1.z) > 15 then
 					gx, gy, gz = nil
 				end
 			end
+
 
 			-- there was collision under the car OR node was simply snapped to ground
 			if gx then
