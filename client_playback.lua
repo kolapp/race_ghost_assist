@@ -465,7 +465,7 @@ function drawRacingLine()
 
 
 	------------------------------------------------------------------------------------------------
-	-- Draw racing line section near player. The magic happens here.
+	-- Draw a section of the racing line near the player. The magic happens here.
 	------------------------------------------------------------------------------------------------
 	vehicle = getPedOccupiedVehicle(getLocalPlayer()) -- keep this
 	local start = nextNodeID
@@ -477,34 +477,37 @@ function drawRacingLine()
 		if (node1 and vehicle) then
 
 			----------------------------------------------------------------------------------------
-			-- Get ghost AND player speed at EVERY PIECE OF RACE LINE
+			-- Racing line coloring
+			-- Color coding using RELATIVE SPEED ERROR
+			-- red=too fast, green=same speed as ghost, white=too slow
+			-- speed_err = 0.5 means you go 50% faster than the ghost
 			----------------------------------------------------------------------------------------
+			-- Get ghost AND player speed for EVERY PIECE OF RACE LINE
 			ghost_speed = getDistanceBetweenPoints3D(0, 0, 0, node1.vX, node1.vY, node1.vZ)
 			my_speed = getDistanceBetweenPoints3D(0, 0, 0, getElementVelocity(vehicle))
 			my_dst = getDistanceBetweenPoints3D(node1.x, node1.y, node1.z, getElementPosition(vehicle))
 
-			-- relative speed error
 			speed_err = Settings["sensitivity"] * ((my_speed - ghost_speed) / ghost_speed)
-			-- old: speed difference roughly in kmh
-			-- speed_err = (ghost_speed - my_speed) * 160
+			-- speed_err = (ghost_speed - my_speed) * 160 -- old: speed difference roughly in kmh
 
 			-- DEBUG
+			-- watch vehicle speeds on the screen
 			-- if i == start then
-			-- 	dxDrawText("speed error: "..math.floor(speed_err*100).. " %", 800, 440, 1920, 1080, tocolor(255, 128, 0, 255), 1, "pricedown")
+			-- 	dxDrawText("speed error: "..math.floor(speed_err*100).. " %",
+			-- 		800, 440, 1920, 1080, tocolor(255, 128, 0, 255), 1, "pricedown"
+			-- 	)
 			-- end
 			-- if i == start then
-			-- 	dxDrawText("my speed: ".. math.floor(my_speed*160), 800, 480, 1920, 1080, tocolor(255, 128, 0, 255), 1, "pricedown")
+			-- 	dxDrawText("my speed: ".. math.floor(my_speed*160),
+			-- 		800, 480, 1920, 1080, tocolor(255, 128, 0, 255), 1, "pricedown"
+			-- 	)
 			-- end
 			-- if i == start then
-			-- 	dxDrawText("ghost speed: ".. math.floor(ghost_speed*160), 800, 520, 1920, 1080, tocolor(255, 128, 0, 255), 1, "pricedown")
+			-- 	dxDrawText("ghost speed: ".. math.floor(ghost_speed*160),
+			-- 		800, 520, 1920, 1080, tocolor(255, 128, 0, 255), 1, "pricedown"
+			-- 	)
 			-- end
 
-			----------------------------------------------------------------------------------------
-			-- Speed color coding FOR RELATIVE SPEED ERROR
-			-- red=too fast, green=okay, white=too slow
-			-- scaled to [-50%, 50%] relative speed error interval
-			-- speed_err = 0.5 means u go 50% faster than the ghost
-			----------------------------------------------------------------------------------------
 			color_r = math.clamp(0, 510 * math.abs(speed_err), 255)
 			color_g = math.clamp(0, -510 * speed_err + 255, 255)
 			color_b = math.clamp(0, -510 * speed_err, 255)
@@ -520,15 +523,19 @@ function drawRacingLine()
 
 			----------------------------------------------------------------------------------------
 			-- Draw one line piece
+			-- Attempt to snap the racing line to the road
 			----------------------------------------------------------------------------------------
 			rx, ry, rz = node1.rX, node1.rY, node1.rZ
 			if (rx > 180) then rx = rx - 360 end
 			if (ry > 180) then ry = ry - 360 end
 
-			-- (xx, yy, zz) <--> (node1.x, node1.y, node1.z) is perpendicular line under the car,
-			-- used for facing arrows and collision check
+			-- An arbitrary point always under the car. Used for facing arrows and collision check
 			xx, yy, zz = getPositionFromElementOffset(node1.x, node1.y, node1.z, rx, ry, rz, -4)
-			-- check hitpoints on the road
+
+			-- Check hitpoints on the road.
+			-- The line (xx, yy, zz) <--> (node1.x, node1.y, node1.z) is perpendicular to the car
+			-- and points down relative to the car.
+			-- gx, gy, gy is supposed to be a position on the road.
 			_, gx, gy, gz, _ = processLineOfSight(
 				node1.x, node1.y, node1.z,
 				xx, yy, zz,
@@ -556,6 +563,7 @@ function drawRacingLine()
 				-- dxDrawLine3D(gx, gy, gz-0.1, gx, gy, gz+0.1, tocolor(0,255,0, 255), 15)
 				-- dxDrawLine3D(xx, yy, zz, node1.x, node1.y, node1.z)
 
+				-- TODO: what?
 				-- !!!
 				if gx and xx2 and i ~= start then
 					dxDrawMaterialLine3D(
