@@ -4,12 +4,18 @@
 	✘ racing line lags behind when im much faster than the ghost @cancelled(25-06-28 15:51)
 	✔ dont draw racing lines below the vehicle when its flying over a jump @done(25-06-28 15:51)
 
-	☐ ghost fix for mr green
-		☐ legacy support?
-		☐ convert xml ghost to json
-		☐ ghost names probably changed
+	☐ mta somehow reads .ghost files from a different mta install location
+
+	☐ ghost fix for mr green?
 		☐ stick to using only local ghost files
-			☐ mta somehow reads .ghost files from a different mta install location
+
+		☐ terrible compatibility
+			☐ race_ghost (vanilla) does not support local ghost files
+			☐ race_ghost (mrgreen) stores local ghosts very differently
+
+		✘ legacy support? @cancelled(25-07-07 15:33)
+		✘ convert xml ghost to json @cancelled(25-07-07 15:34)
+		✔ ghost names probably changed @done(25-07-07 15:34)
 
 		[Dev] VulpyWags: The way ghosts are saved is also differnetly, so issue 1 wont' fix it
 		[Dev] VulpyWags: See https://github.com/MrGreenGaming/MTA-Resources/blob/78b71e16117c49dfa83e235ad40bc2d6f84c8f47/resources/%5Brace%5D/race_ghost/playback_client.lua#L333
