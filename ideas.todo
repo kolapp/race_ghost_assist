@@ -1,4 +1,7 @@
 @pin
+	☐ tesztelni jo mapok
+		race-itlttoan2
+
 	☐ functions are spaghetti code
 	✔ file and function names are terrible @done(25-06-28 15:51)
 	✘ racing line lags behind when im much faster than the ghost @cancelled(25-06-28 15:51)

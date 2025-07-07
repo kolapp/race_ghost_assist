@@ -549,6 +549,10 @@ function drawRacingLine()
 			-- ry > 70 going sideways on a wall
 			if not gx and abs(rx) < 80 and abs(ry) < 70 then
 				gx, gy, gz = node1.x, node1.y, getGroundPosition(node1.x, node1.y, node1.z)
+
+				-- DEBUG: keep this, see ground coordinates
+				-- dxDrawLine3D(gx, gy, gz, gx, gy, gz+0.2, tocolor(255, 0, 0, 255), 15)
+
 				-- dont snap if ground is too far
 				if abs(gz - node1.z) > 15 then
 					gx, gy, gz = nil
