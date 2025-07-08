@@ -465,6 +465,17 @@ function drawRacingLine()
 	------------------------------------------------------------------------------------------------
 	vehicle = getPedOccupiedVehicle(getLocalPlayer()) -- keep this
 
+	-- DEBUG rotation
+	-- rx, ry, _ = getElementRotation(vehicle)
+	-- if (rx > 180) then rx = rx - 360 end
+	-- if (ry > 180) then ry = ry - 360 end
+	-- dxDrawText("rx " .. math.floor(rx),
+	-- 	800, 400, 1920, 1080, tocolor(255, 128, 0, 255), 1, "pricedown"
+	-- )
+	-- dxDrawText("ry " .. math.floor(ry),
+	-- 	800, 450, 1920, 1080, tocolor(255, 128, 0, 255), 1, "pricedown"
+	-- )
+
 	-- the next few nodes
 	local start = nextNodeID
 	for i = start, start + Settings["linelength"], 1 do
@@ -541,8 +552,8 @@ function drawRacingLine()
 
 
 			-- PLAN B) Simply snap to the ground, because there was no collision.
-			-- rx > 80: going straight up or upside down
-			-- ry > 70 going sideways on a wall
+			-- rx > 80: very steep uphill/downhill or a coaster loop
+			-- ry > 70: going sideways on a wall
 			if not gx and abs(rx) < 80 and abs(ry) < 70 then
 				gx, gy, gz = node1.x, node1.y, getGroundPosition(node1.x, node1.y, node1.z)
 
