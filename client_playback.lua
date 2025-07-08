@@ -210,8 +210,8 @@ addEventHandler(
 	"onClientMapStarting",
 	g_Root,
 	function(mapInfo)
-		outputDebug("onClientMapStarting") -- DEBUG
-		-- !!!
+		outputDebug("onClientMapStarting")
+
 		if Settings["enable"] == "on" and Settings["mode"] == "local" then
 			-- disable for NTS
 			local currentGameMode = string.upper(mapInfo.modename)
@@ -250,9 +250,8 @@ addEventHandler(
 	"onClientGhostDataReceive",
 	g_Root,
 	function(rec, bestTime, racer, _, _)
-		outputDebug("onClientGhostDataReceive") -- DEBUG
+		outputDebug("onClientGhostDataReceive")
 
-		-- !!!
 		if Settings["enable"] == "on" and Settings["mode"] == "top" then
 			-- destroy any leftover stuff
 			if recording then
@@ -262,9 +261,7 @@ addEventHandler(
 			-- ghost data from "race_ghost" folder must be converted
 			recording = {}
 
-			-- "While a table with three elements needs three rehashings, a table with one
-			-- million elements needs only twenty"
-			-- copy and filter things
+			-- copy and filter
 			local i = 1
 			while(rec[i]) do
 				-- only need po type
@@ -272,7 +269,7 @@ addEventHandler(
 					table.insert(recording, rec[i])
 				end
 				i = i + 1
-			end -- while
+			end
 
 			lastNodeID = 1
 			nextNodeID = 1
@@ -365,7 +362,7 @@ function updateRacingLine()
 	------------------------------------------------------------------------------------------------
 	-- At this point, the racing line is too far behind the player. It is valid, but looks stupid.
 	-- I want the racing line to start from the vehicle.
-	-- For that, I scroll through a few nodes to find one close to the player.
+	-- For that, I scroll through a few nodes to find one closest to the player.
 	-- TODO: somewhat hard to understand the concept from code
 	------------------------------------------------------------------------------------------------
 	if (nextNode ~= nil) then
