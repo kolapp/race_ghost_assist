@@ -1,4 +1,6 @@
-﻿-- // =====================[ important variables ] ===================//
+﻿----------------------------------------------------------------------------------------------------
+-- Important variables
+----------------------------------------------------------------------------------------------------
 g_Root = getRootElement()
 
 local nextNode = nil -- !!!
@@ -12,7 +14,7 @@ local x, y, z
 local xx, yy, zz
 local xx2, yy2, zz2
 local rx, ry, rz
--- local fx, fy, fz
+-- Letter "g" stands for "ground".
 local gx, gy, gz
 
 local ghost_speed
@@ -23,7 +25,6 @@ local dst = 0
 
 local vehicle
 local vType
--- local theType
 local color_r, color_g, color_b, color_a
 local my_weight = 1500
 local arrowSize = 2
@@ -43,9 +44,8 @@ local abs = math.abs
 ----------------------------------------------------------------------------------------------------
 -- racing lines local/server mode
 function assistMode(player, mode)
-
 	Settings["mode"] = mode
-	-- outputDebug("racing assist mode: ".. inspect(Settings["mode"])) -- DEBUG
+	outputDebug("mode changed to: ".. inspect(Settings["mode"]))
 	saveSettings()
 end
 addCommandHandler('assistmode', assistMode)
@@ -110,7 +110,7 @@ end
 -- cleanup at finish/map change
 function destroy()
 	-- who triggered it?
-	outputDebug("@destroy, source: "..inspect(eventName))
+	outputDebug("@destroy, source: " .. inspect(eventName))
 
 	-- must have
 	if isTimer(assistTimer) then
@@ -152,12 +152,11 @@ function loadGhost(mapName)
 		return false
 	end
 
-	-- local ghosts are in the "race_ghost" resource!!!
+	-- local ghosts are in the "race_ghost" resource!
 	local ghost = xmlLoadFile(":race_ghost/ghosts/" .. mapName .. ".ghost")
 	outputDebug("@loadGhost: " .. inspect(ghost)) -- DEBUG
 
 	if ghost then
-
 		-- Construct a table
 		local index = 0
 		local node = xmlFindChild(ghost, "n", index)
@@ -465,12 +464,12 @@ function drawRacingLine()
 
 
 	------------------------------------------------------------------------------------------------
-	-- Draw a section of the racing line near the player. The magic happens here.
+	-- Draw a section of the racing line. The magic happens here.
 	------------------------------------------------------------------------------------------------
 	vehicle = getPedOccupiedVehicle(getLocalPlayer()) -- keep this
-	local start = nextNodeID
 
-	-- draw the next few nodes
+	-- the next few nodes
+	local start = nextNodeID
 	for i = start, start + Settings["linelength"], 1 do
 		node1 = recording[i]
 		-- need 2 valid nodes to make a line AND being in a vehicle to continue
@@ -530,11 +529,11 @@ function drawRacingLine()
 			if (ry > 180) then ry = ry - 360 end
 
 			-- PLAN A) Look for hitpoints directly under the ghost car.
-			-- Should work even if the car is upside down!
-			xx, yy, zz = getPositionFromElementOffset(node1.x, node1.y, node1.z, rx, ry, rz, -4)
 			-- The line (xx, yy, zz) <--> (node1.x, node1.y, node1.z) is perpendicular
 			-- to the plane of the car and points down.
-			-- Letter "g" stands for "ground".
+			-- Works even if the car is upside down!
+			xx, yy, zz = getPositionFromElementOffset(node1.x, node1.y, node1.z, rx, ry, rz, -4)
+
 			_, gx, gy, gz, _ = processLineOfSight(
 				node1.x, node1.y, node1.z,
 				xx, yy, zz,
@@ -565,8 +564,7 @@ function drawRacingLine()
 				-- nudge it above the road a little (works upside down too)
 				gx, gy, gz = getPositionFromElementOffset(gx, gy, gz, rx, ry, rz, 0.2)
 
-				-- DEBUG: keep this
-				-- see ground coordinates
+				-- DEBUG: keep this, see ground coordinates
 				-- dxDrawLine3D(gx, gy, gz-0.1, gx, gy, gz+0.1, tocolor(255, 0, 0, 255), 15)
 
 				-- !!!
@@ -578,8 +576,10 @@ function drawRacingLine()
 						xx, yy, zz
 					)
 				end
+
 				-- !!!
-				-- Current node and node from previous iteration are connected into a line!
+				-- Ground coordinates are saved for the next iteration because it takes
+				-- two points to make a line. Also to have a fewer calculations.
 				xx2, yy2, zz2 = gx, gy, gz
 
 			-- there was no collision
